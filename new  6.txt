@@ -1,0 +1,78 @@
+<?php
+$awal = 0;
+$limitan = 10;
+session_start();
+include "phpcon/link.php";
+$apa = mysql_query("select*from timeline where tujuan='$_GET[det]' order by id desc limit $awal,$limitan");
+$aaa = mysql_query("select*from timeline where tujuan='$_GET[det]' order by id desc limit $awal,$limitan");
+$aol = mysql_fetch_array($aaa);
+$jml = mysql_num_rows($aaa);
+if(empty($aol['id'])){
+echo "<br><br><br>Tidak ada status";
+}
+else{
+while($ew = mysql_fetch_array($apa)){
+$q = mysql_query("select*from detail_akun where id_akun='$ew[host]'");
+$qwqw = mysql_fetch_array($q);
+?>
+<table>
+<tr>
+<td rowspan=2 style="width:50px;" valign=top>
+<img style="width:50px;height:50px;overflow-y:hidden;" src="<?php echo $qwqw[fp];?>"></img>
+</td>
+<td>
+	<?php echo $qwqw['nama_depan']." ".$qwqw[nama_belakang]; if($ew['tujuan']!="general"){
+	$gen = mysql_query("select*from detail_akun where id_akun='$ew[tujuan]'");
+	$rowgen = mysql_fetch_array($gen);
+	echo " > ".$rowgen['nama_depan'];
+	}?>
+</td>
+</tr>
+<tr>
+	<td rowspan=2 style=" white-space: pre;white-space: pre-wrap;word-wrap:break-all"><?php echo $ew['isi'];?></td>
+</tr>
+<tr>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+Dikirim pada <?php echo $ew[jam].":".$ew[menit]." ".$ew[detik]."/".$ew[tgl]."/".$ew[bln]."/".$ew[thn]." 	";?>
+
+<a href="index.php?rpl=detstat&det=<?php echo $ew['id'];?>"><i title="Komentar" class=icon-comments-4></i></a>
+<?php
+if($ew['host']==$_SESSION['id']){
+?>
+	<a href="diletstatus.php?next=profile&art=<?php echo $ew['id'];?>"><i title="Hapus" class=icon-remove></i></a>
+<?php
+}
+$asdf = mysql_query("select id,id_akun,id_tl from sukastatusasli where id_tl=$ew[id] and id_akun=$_GET[det]");
+$asd = mysql_query("select id,id_akun,id_tl from sukastatusasli where id_tl=$ew[id]");
+$mm = mysql_num_rows($asd); 
+$like = mysql_fetch_array($asdf); 
+if(empty($like['id'])){
+?>
+<a href="likeinstatus.php?next=profile&det=<?php echo $ew[id];?>&id=<?php echo $_GET[det];?>"><i title="<?php echo $mm; ?> Suka" class=icon-thumbs-up></i></a>
+<?php
+}
+else if(!empty($like['id'])){
+?>
+<a href="likeoutstatus.php?next=profile&det=<?php echo $ew[id];?>&id=<?php echo $_GET[det];?>"><i title="<?php echo $mm; ?> Suka" class=icon-thumbs-down></i></a>
+<?php
+}
+?>
+
+</td>
+</tr>
+</table>
+
+
+
+<?php
+
+}
+
+}
+?>

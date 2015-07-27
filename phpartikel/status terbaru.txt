@@ -1,0 +1,33 @@
+<div class="place-right span6">
+<label>Status Terbaru</label>
+<div style="height:500px;overflow-y:scroll;">
+<?php 
+	$limitan = 10;
+	$awal=0;
+	if(isset($_POST['lanjutkan'])){
+	$limitan = $limitan;
+	$awal = $awal + 10;
+	}
+
+$ewq = mysql_query("select*from timeline order by id desc limit $awal,$limitan");
+while($wow = mysql_fetch_array($ewq)){
+$a = mysql_query("select*from detail_akun where id_akun='$wow[id_akun]'");
+$re = mysql_fetch_array($a);
+?>
+<div style="border-bottom:1px solid #999;margin:5px;">
+	<b><?php echo $re[nama_depan]." ".$re[nama_belakang];?></b>
+<br>
+	<?php echo $wow[isi];?>
+	
+</div>
+
+
+<?php
+
+}
+?>
+<form method="POST" action="">
+<button type="submit" class="bg-color-blue" style="color:white;width:96%;" name="lanjutkan">Status Sebelumnya</button>
+</form>
+</div>
+</div>

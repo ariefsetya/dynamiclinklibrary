@@ -1,0 +1,1 @@
+Denda Pengembalian buku diambil dari Jumlah Hari, Bulan atau Minggu, Besar denda tersebut dapat ditentukan oleh admin
